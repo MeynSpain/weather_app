@@ -20,6 +20,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalController globalController =
       Get.put(GlobalController(), permanent: true);
 
+  // double lat = 0;
+  // double long = 0;
+  //
+  // String getLatLong() {
+  //   setState(() {
+  //     lat = globalController.getLatitude().value;
+  //     long = globalController.getLongitude().value;
+  //   });
+  //   return "$lat - $long";
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,16 +42,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('WEATHER', style: TextStyle(
-                      fontSize: 26,
-                      color: CustomColors.firstGradientColor
-                    ),),
+                    const Text(
+                      'WEATHER',
+                      style: TextStyle(
+                          fontSize: 26, color: CustomColors.firstGradientColor),
+                    ),
                     Image.asset(
                       'assets/icons/clouds.png',
                       height: 200,
                       width: 200,
                     ),
-                    const CircularProgressIndicator()
+                    const CircularProgressIndicator(),
+                    Container(
+                      margin: const EdgeInsets.all(20),
+                      child: Text('${globalController.debugString}',
+                        style: const TextStyle(color: Colors.red, fontSize: 16),
+                      ),
+                    )
                   ],
                 ),
               )

@@ -10,6 +10,8 @@ class GlobalController extends GetxController {
   final RxDouble _longitude = 0.0.obs;
   final RxInt _currentIndex = 0.obs;
 
+  String debugString = "";
+
   // instance for them to be called
   RxBool checkLoading() => _isLoading;
 
@@ -57,7 +59,6 @@ class GlobalController extends GetxController {
         return Future.error('Location permission is denied!');
       }
     }
-
     // getting is current position
     return await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high)
@@ -66,13 +67,18 @@ class GlobalController extends GetxController {
       _latitude.value = value.latitude;
       _longitude.value = value.longitude;
 
-      // calling our weather api
-      return FetchWeatherAPI()
-          .processData(value.latitude, value.longitude)
-          .then((value) {
-        weatherData.value = value;
-        _isLoading.value = false;
-      });
+
+        // calling our weather api
+        return FetchWeatherAPI()
+            .processData(value.latitude, value.longitude)
+            .then((value) {
+          weatherData.value = value;
+          _isLoading.value = false;
+        })
+        .catchError((e) {
+          debugString = "Couldn't get weather data, check your internet connection.";
+        });
+
     });
   }
 
